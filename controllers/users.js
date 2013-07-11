@@ -1,30 +1,33 @@
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
+var UserModel = mongoose.model('User');
 
 exports.findAll = function(req, res) {
-	User.find(function (err, users) {
+	UserModel.find(function (err, users) {
 		if (err) {
-			console.log(':( error while fetching users:' + err);
+			console.err(':( error while fetching users:' + err);
 			return;
 		}
-		console.log('Fetched users:' + users);
+		//console.log('Fetched users:' + users);
 		res.send(users);
 	});
 };
  
 exports.findById = function(req, res) {
-	User.find({ id: req.params.id }, function (err, user) {
+	UserModel.findOne({ id: req.params.id }, function (err, user) {
 		if (err) {
-			console.log(':( error while fetching user:' + err);
+			console.err(':( error while fetching user:' + err);
 			return;
 		}
-		console.log('Fetched user:' + users);
+		//console.log('Fetched user:' + users);
 		res.send(user);
 	})
 };
 
 exports.create = function(req, res) {
+	console.log('User to save: ' + req.body.firstName);
+
 	var user = new UserModel({
+		id: req.body.id,
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		hashed_password: req.body.hashed_password,
@@ -33,10 +36,10 @@ exports.create = function(req, res) {
 
 	user.save(function (err, user) {
 		if (err) {
-			console.log(':( error while saving user:' + err);
+			console.err(':( error while saving user:' + err);
 			return;
 		}
-		console.log('Saved user:' + user);
+		//console.log('Saved user:' + user);
 		res.send(user);
 	})
 };
