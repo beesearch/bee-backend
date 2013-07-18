@@ -4,20 +4,6 @@ model.getAccessToken = function (bearerToken, callback) {
 	console.log('in getAccessToken (bearerToken: ' + bearerToken + ')');
 	var oauth_access_token = {access_token: bearerToken, client_id: 's6BhdRkqt3', expires: 'Thu Jul 18 2013 18:55:31 GMT+0200 (CEST)', user_id: '1'};
 	callback(null, oauth_access_token);
-
-
-	/*pg.connect(connString, function (err, client, done) {
-		if (err) return callback(err);
-		client.query('SELECT access_token, client_id, expires, user_id FROM oauth_access_tokens ' +
-				'WHERE access_token = $1', [bearerToken], function (err, result) {
-			// This object will be exposed in req.oauth.token
-			// The user_id field will be exposed in req.user (req.user = { id: "..." }) however if
-			// an explicit user object is included (token.user, must include id) it will be exposed
-			// in req.user instead
-			callback(err, result.rowCount ? result.rows[0] : false);
-			done();
-		});
-	});*/
 };
 
 model.getClient = function (clientId, clientSecret, callback) {
