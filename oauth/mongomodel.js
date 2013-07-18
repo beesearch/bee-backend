@@ -2,6 +2,9 @@ var model = module.exports;
 
 model.getAccessToken = function (bearerToken, callback) {
 	console.log('in getAccessToken (bearerToken: ' + bearerToken + ')');
+	var oauth_access_token = {access_token: bearerToken, client_id: 's6BhdRkqt3', expires: 'Thu Jul 18 2013 18:55:31 GMT+0200 (CEST)', user_id: '1'};
+	callback(null, oauth_access_token);
+
 
 	/*pg.connect(connString, function (err, client, done) {
 		if (err) return callback(err);
@@ -39,16 +42,6 @@ model.grantTypeAllowed = function (clientId, grantType, callback) {
 model.saveAccessToken = function (accessToken, clientId, userId, expires, callback) {
 	console.log('in saveAccessToken (accessToken: ' + accessToken + ', clientId: ' + clientId + ', userId: ' + userId + ', expires: ' + expires + ')');
 	callback(null);
-};
-
-model.saveRefreshToken = function (refreshToken, clientId, userId, expires, callback) {
-	pg.connect(connString, function (err, client, done) {
-		if (err) return callback(err);
-			client.query('INSERT INTO oauth_refresh_tokens(refresh_token, client_id, user_id, ' +
-			'expires) VALUES ($1, $2, $3, $4)', [accessToken, clientId, userId, expires], function (err, result) {
-			callback(err);
-		});
-	});
 };
 
 /*
