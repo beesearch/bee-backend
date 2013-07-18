@@ -1,11 +1,12 @@
 {
-	"name": "zenbox-backend",
-	"description": "Zenbox backend application",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-		"express": "3.x",
-		"connect": "*",
-		"mongoose": "3.x"
-	}
+  "name": "zenbox-backend",
+  "description": "Zenbox backend application",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "connect": "*",
+    "mongoose": "3.x",
+    "node-oauth2-server": "~1.4.1"
+  }
 }
