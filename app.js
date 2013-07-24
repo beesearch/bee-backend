@@ -7,18 +7,17 @@ var users = require('./controllers/users')
 
 var app = express();
 
-
 app.configure(function () {
 	var oauth = oauthserver({
-        model: require('./oauth/mongomodel'),
-        grants: ['password'],
-    	debug: true
-    });
+		model: require('./oauth/mongoose-oauth-model'),
+		grants: ['password'],
+		debug: true
+	});
 	app.use(express.logger());
 	app.use(express.bodyParser());
-	//app.use(app.router);
 	app.use(oauth.handler());
-    app.use(oauth.errorHandler());
+	app.use(oauth.errorHandler());
+	app.use(app.router);
 	//app.use(express.static(__dirname + '/public'));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }); 
