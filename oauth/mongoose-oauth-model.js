@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
-	Schema = mongoose.Schema;
-var model = module.exports;
+	Schema = mongoose.Schema,
+	model = module.exports;
 
 //
 // Schemas definitions
@@ -18,25 +18,27 @@ var OAuthClientsSchema = new Schema({
 	redirect_uri: { type: String }
 });
 
-var UsersSchema = new Schema({
-	id: { type: String },
+var OAuthUsersSchema = new Schema({
+	id: { type: Number },
 	username: { type: String },
-	password: { type: String }
+	password: { type: String },
+	firstname: { type: String },
+	lastname: { type: String },
+	email: { type: String, default: '' }
 });
 
 mongoose.model('OAuthAccessTokens', OAuthAccessTokensSchema);
 mongoose.model('OAuthClients', OAuthClientsSchema);
-mongoose.model('Users', UsersSchema);
+mongoose.model('OAuthUsers', OAuthUsersSchema);
 
 var OAuthAccessTokensModel = mongoose.model('OAuthAccessTokens'),
 	OAuthClientsModel = mongoose.model('OAuthClients'),
-	UsersModel = mongoose.model('Users');
+	OAuthUsersModel = mongoose.model('OAuthUsers');
 
 //
 // node-oauth2-server callbacks
 //
 model.getAccessToken = function (bearerToken, callback) {
-
 	console.log('in getAccessToken (bearerToken: ' + bearerToken + ')');
 
 	OAuthAccessTokensModel.findOne({ access_token: bearerToken }, function (err, accessToken) {
@@ -96,7 +98,7 @@ model.saveAccessToken = function (accessToken, clientId, userId, expires, callba
 model.getUser = function (username, password, callback) {
 	console.log('in getUser (username: ' + username + ', password: ' + password + ')');
 
-	UsersModel.findOne({ username: username, password: password }, function (err, user) {
+	OAuthUsersModel.findOne({ username: username, password: password }, function (err, user) {
 		if (err) {
 			return callback(err);
 		}

@@ -1,12 +1,15 @@
+// Dependencies
 var express = require('express');
 var oauthserver = require('node-oauth2-server');
 var mongoose = require('mongoose');
+
+// Schemas and controllers
 require('./models/db');
-require('./models/userSchema');
-var users = require('./controllers/users')
+require('./models/contactsSchema');
+var contacts = require('./controllers/contacts')
 
+// Express setup
 var app = express();
-
 app.configure(function () {
 	var oauth = oauthserver({
 		model: require('./oauth/mongoose-oauth-model'),
@@ -22,9 +25,11 @@ app.configure(function () {
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }); 
 
-app.get('/users', users.findAll);
-app.get('/users/:id', users.findById);
-app.put('/users', users.create);
+// Routes
+app.get('/contacts', contacts.findAll);
+app.get('/contacts/:id', contacts.findById);
+app.put('/contacts', contacts.create);
 
+// Show must go on!
 app.listen(3000);
 console.log('Listening on port 3000...');
