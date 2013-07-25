@@ -36,6 +36,6 @@ A challenge password []:
 
 An optional company name []:
 
-openssl x509 -req -in certrequest.csr -signkey zenbox-key.pem -out zenbox-cert.pem
+$ openssl x509 -req -in certrequest.csr -signkey zenbox-key.pem -out zenbox-cert.pem
 
 ```
