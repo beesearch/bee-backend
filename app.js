@@ -3,8 +3,10 @@ var express = require('express');
 var oauthserver = require('node-oauth2-server');
 var mongoose = require('mongoose');
 
+// Db setup
+require('./app/db');
+
 // Schemas and controllers
-require('./app/models/db');
 require('./app/models/contactsSchema');
 var contacts = require('./app/controllers/contacts')
 
