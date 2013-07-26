@@ -4,15 +4,15 @@ var oauthserver = require('node-oauth2-server');
 var mongoose = require('mongoose');
 
 // Schemas and controllers
-require('./models/db');
-require('./models/contactsSchema');
-var contacts = require('./controllers/contacts')
+require('./app/models/db');
+require('./app/models/contactsSchema');
+var contacts = require('./app/controllers/contacts')
 
 // Express setup
 var app = express();
 app.configure(function () {
 	var oauth = oauthserver({
-		model: require('./oauth/mongoose-oauth-model'),
+		model: require('./app/oauth/mongoose-oauth-model'),
 		grants: ['password'],
 		debug: true
 	});
@@ -31,5 +31,7 @@ app.get('/contacts/:id', contacts.findById);
 app.put('/contacts', contacts.create);
 
 // Show must go on!
-app.listen(3000);
-console.log('Listening on port 3000...');
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+  console.log("Listening on " + port + "...");
+});
