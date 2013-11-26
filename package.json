@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "3.x",
     "mongoose": "3.x",
-    "node-oauth2-server": "~1.4.1"
+    "node-oauth2-server": "~1.4.1",
+    "passport-http-bearer": "~1.0.1"
   }
 }

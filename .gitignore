@@ -9,3 +9,8 @@ ehthumbs.db
 Thumbs.db
 *.csr
 *.pem
+
+# certificates
+keys/bee-cert.pem
+keys/bee-key.pem
+keys/certrequest.csr
