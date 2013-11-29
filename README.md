@@ -1,10 +1,40 @@
 # bee-backend
 
-==============
+## Security setup
 
-Security setup
+### OAuth 2.0
 
---------------
+Insert a client in the database :
+
+```
+
+db.oauthclients.save({ client_id: 's6BhdRkqt3', client_secret: 'gX1fBat3bV', redirect_uri: 'http://beesearch.fr/logged' })
+
+```
+
+Insert a user in the database :
+
+```
+
+db.oauthusers.save({ id: '1', username: 'johndoe', password:'534b44a19bf18d20b71ecc4eb77c572f', firstname: 'John', lastname: 'Doe' })
+
+```
+
+To get an access token, launch a POST request on /oauth/token :
+
+```
+
+POST /oauth/token HTTP/1.1
+Host: server.example.com
+Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=johndoe&password=534b44a19bf18d20b71ecc4eb77c572f
+
+```
+
+
+### HTTPS
 
 Go in the in the keys folder and generate the sign key :
 
@@ -37,7 +67,7 @@ An optional company name []:
 
 ```
 
-Finally generate the certificate
+Finally generate the certificate :
 
 ```bash
 
