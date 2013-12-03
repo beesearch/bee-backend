@@ -83,7 +83,7 @@ model.saveAccessToken = function (accessToken, clientId, userId, expires, callba
 		expires: expires
 	});
 
-	accessToken.save(accessToken, function (err, token) {
+	accessToken.save(function (err, token) {
 		if (err) {
 			return callback(err);
 		}

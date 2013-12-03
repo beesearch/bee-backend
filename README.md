@@ -33,7 +33,6 @@ grant_type=password&username=johndoe&password=534b44a19bf18d20b71ecc4eb77c572f
 
 ```
 
-
 ### HTTPS
 
 Go in the in the keys folder and generate the sign key :
