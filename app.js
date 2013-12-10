@@ -6,15 +6,23 @@ var express = require('express');
 var oauthserver = require('node-oauth2-server');
 var mongoose = require('mongoose');
 
-var allowCrossDomain = function(req, res, next) {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'content-type');
-    // Pass to next layer of middleware
-    next();
+var enableCORS = function(req, res, next) {
+	// Website you wish to allow to connect
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	// Request methods you wish to allow
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+	// Request headers you wish to allow
+	res.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
+
+	// intercept OPTIONS method
+	if ('OPTIONS' == req.method) {
+		// Accept CORS request,
+		// Client will then send the real request
+		res.send(200);
+	} else {
+		// Pass to next layer of middleware
+		next();
+	}
 };
 
 // Express setup
@@ -25,13 +33,12 @@ app.configure(function () {
 		grants: ['password'],
 		debug: true
 	});
-	app.use(allowCrossDomain);
+	app.use(enableCORS);
 	app.use(express.logger());
 	app.use(express.bodyParser());
 	app.use(oauth.handler());
 	app.use(oauth.errorHandler());
 	app.use(app.router);
-	//app.use(express.static(__dirname + '/public'));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }); 
 
