@@ -30,7 +30,7 @@ var app = express();
 app.configure(function () {
 	var oauth = oauthserver({
 		model: require('./app/oauth/mongoose-oauth-model'),
-		grants: ['password'],
+		grants: ['password', 'refresh_token'],
 		debug: true
 	});
 	app.use(enableCORS);
