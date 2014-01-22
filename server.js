@@ -4,7 +4,6 @@ var http = require('http');
 var https = require('https');
 var express = require('express');
 var oauthserver = require('node-oauth2-server');
-var mongoose = require('mongoose');
 
 var enableCORS = function(req, res, next) {
 	// Website you wish to allow to connect
@@ -25,6 +24,9 @@ var enableCORS = function(req, res, next) {
 	}
 };
 
+// MongoDB setup
+require('./app/db/setup');
+
 // Express setup
 var app = express();
 app.configure(function () {
@@ -36,23 +38,22 @@ app.configure(function () {
 	app.use(enableCORS);
 	app.use(express.logger());
 	app.use(express.bodyParser());
-	app.use(oauth.handler());
-	app.use(oauth.errorHandler());
+	//app.use(oauth.handler());
+	//app.use(oauth.errorHandler());
 	app.use(app.router);
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-}); 
-
-// Db setup
-require('./app/db');
+});
 
 // Schemas and controllers
-require('./app/models/contactsSchema');
-var contacts = require('./app/controllers/contacts')
+//require('./app/models/contactsSchema');
+//var contacts = require('./app/controllers/contacts')
+var elastic = require('./app/controllers/elastic')
 
 // Routes
-app.get('/contacts', contacts.findAll);
-app.get('/contacts/:id', contacts.findById);
-app.put('/contacts', contacts.create);
+//app.get('/contacts', contacts.findAll);
+//app.get('/contacts/:id', contacts.findById);
+//app.put('/contacts', contacts.create);
+app.get('/search', elastic.search);
 
 // Keys definition for HTTPS
 var options = {
@@ -61,6 +62,6 @@ var options = {
 };
 
 // Show must go on!
-http.createServer(app).listen(80);
-https.createServer(options, app).listen(443);
+http.createServer(app).listen(8080);
+//https.createServer(options, app).listen(443);
 console.log ('Server started: HTTP & HTTPS are listening...');
