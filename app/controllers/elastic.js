@@ -1,15 +1,21 @@
 
 exports.search = function(req, res) {
-	var start = req.params.start;
-	var length = req.params.length;
+	var page = parseInt(req.query.page);
+	var length = parseInt(req.query.length);
 	var result = [];
 
-	console.log('start: ' + start);
-	console.log('length: ' + length);
+	// Calculating start and end elements
+	var start = (page - 1) * length;
+	var end = (start + length) - 1;
 
-	for (var i = length - 1; i >= 0; i--) {
-		result[i] = 'Result number : ' + i;
+	console.log('page: ' + page);
+	console.log('length: ' + length);
+	console.log('start: ' + start);
+	console.log('end: ' + end);
+
+	for (var i = start; i <= end; i++) {
+		result.push({'id': i, 'text': 'Result number : ' + i});
 	};
 
-	return result;
+	res.send(result);
 }
