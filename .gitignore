@@ -14,3 +14,6 @@ Thumbs.db
 keys/bee-cert.pem
 keys/bee-key.pem
 keys/certrequest.csr
+
+# config file
+config.json

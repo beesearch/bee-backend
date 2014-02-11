@@ -1,0 +1,10 @@
+{
+	"http": {
+		"enabled" : false,
+		"port" : "80"
+	},
+	"https": {
+		"enabled" : true,
+		"port" : "443"
+	}
+}

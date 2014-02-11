@@ -5,6 +5,9 @@ var https = require('https');
 var express = require('express');
 var oauthserver = require('node-oauth2-server');
 
+// Config
+var config = require('./config.json');
+
 var enableCORS = function(req, res, next) {
 	// Website you wish to allow to connect
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -47,7 +50,7 @@ app.configure(function () {
 // Schemas and controllers
 //require('./app/models/contactsSchema');
 //var contacts = require('./app/controllers/contacts')
-var elastic = require('./app/controllers/elastic')
+var elastic = require('./app/controllers/elastic');
 
 // Routes
 //app.get('/contacts', contacts.findAll);
@@ -62,6 +65,11 @@ var options = {
 };
 
 // Show must go on!
-http.createServer(app).listen(8080);
-//https.createServer(options, app).listen(443);
-console.log ('Server started: HTTP & HTTPS are listening...');
+if (config.http.enabled) {
+	http.createServer(app).listen(config.http.port);
+	console.log ('Server started: HTTP listening on port ' + config.http.port);
+};
+if (config.https.enabled) {
+	https.createServer(options, app).listen(config.https.port);
+	console.log ('Server started: HTTPS listening on port ' + config.https.port);
+};
