@@ -4,7 +4,7 @@
 
 ### OAuth 2.0
 
-Insert a client in the database :
+Insert a client in the database:
 
 ```
 
@@ -12,7 +12,7 @@ db.oauthclients.save({ client_id: 's6BhdRkqt3', client_secret: 'gX1fBat3bV', red
 
 ```
 
-Insert a user in the database :
+Insert a user in the database:
 
 ```
 
@@ -20,7 +20,7 @@ db.oauthusers.save({ id: '1', username: 'johndoe', password:'534b44a19bf18d20b71
 
 ```
 
-To get an access token, launch a POST request on /oauth/token :
+To get an access token, launch a POST request on /oauth/token:
 
 ```
 
@@ -35,7 +35,7 @@ grant_type=password&username=johndoe&password=534b44a19bf18d20b71ecc4eb77c572f
 
 ### HTTPS
 
-Go in the in the keys folder and generate the sign key :
+Go in the in the keys folder and generate the sign key:
 
 ```bash
 
@@ -45,7 +45,7 @@ $ openssl genrsa -out bee-key.pem 1024
 
 ```
 
-Then generate the certificate request :
+Then generate the certificate request:
 
 ```bash
 
@@ -66,10 +66,17 @@ An optional company name []:
 
 ```
 
-Finally generate the certificate :
+Generate the certificate:
 
 ```bash
 
 $ openssl x509 -req -in certrequest.csr -signkey bee-key.pem -out bee-cert.pem
+
+```
+
+Finally configure the server:
+```bash
+
+$ cp config.json.sample config.json
 
 ```
