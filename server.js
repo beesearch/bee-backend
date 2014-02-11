@@ -41,8 +41,11 @@ app.configure(function () {
 	app.use(enableCORS);
 	app.use(express.logger());
 	app.use(express.bodyParser());
-	//app.use(oauth.handler());
-	//app.use(oauth.errorHandler());
+	if (config.oauth.enabled) {
+		app.use(oauth.handler());
+		app.use(oauth.errorHandler());
+		console.log ('Oauth 2.0 is enabled');
+	};
 	app.use(app.router);
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
