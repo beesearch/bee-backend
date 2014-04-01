@@ -19,3 +19,7 @@ exports.search = function(req, res) {
 
 	res.send(result);
 }
+
+exports.getData = function(req, res) {
+	res.send({'type': 'Hello', 'now': Date.now});
+}

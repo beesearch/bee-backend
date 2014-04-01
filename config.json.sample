@@ -6,8 +6,7 @@
 	"https": {
 		"enabled" : true,
 		"port" : "443"
-	}
-	,
+	},
 	"oauth": {
 		"enabled" : true
 	}

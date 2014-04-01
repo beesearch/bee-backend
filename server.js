@@ -34,6 +34,8 @@ require('./app/db/setup');
 var app = express();
 app.configure(function () {
 	var oauth = oauthserver({
+		accessTokenLifetime: 15,
+		refreshTokenLifetime: 60,
 		model: require('./app/oauth/mongoose-oauth-model'),
 		grants: ['password', 'refresh_token'],
 		debug: true
@@ -60,6 +62,7 @@ var elastic = require('./app/controllers/elastic');
 //app.get('/contacts/:id', contacts.findById);
 //app.put('/contacts', contacts.create);
 app.get('/search', elastic.search);
+app.get('/data', elastic.getData);
 
 // Keys definition for HTTPS
 var options = {
@@ -71,8 +74,8 @@ var options = {
 if (config.http.enabled) {
 	http.createServer(app).listen(config.http.port);
 	console.log ('Server started: HTTP listening on port ' + config.http.port);
-};
+}
 if (config.https.enabled) {
 	https.createServer(options, app).listen(config.https.port);
 	console.log ('Server started: HTTPS listening on port ' + config.https.port);
-};
+}
