@@ -34,8 +34,6 @@ require('./app/db/setup');
 var app = express();
 app.configure(function () {
 	app.oauth = oauthserver({
-		accessTokenLifetime: 15,
-		refreshTokenLifetime: 60,
 		model: require('./app/oauth/mongoose-oauth-model'),
 		grants: ['password', 'refresh_token'],
 		debug: true
