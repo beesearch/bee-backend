@@ -8,7 +8,7 @@ Insert a client in the database:
 
 ```
 
-db.oauthclients.save({ client_id: 's6BhdRkqt3', client_secret: 'gX1fBat3bV', redirect_uri: 'http://beesearch.fr/logged' })
+db.oauthclients.save({ clientId: 's6BhdRkqt3', clientSecret: 'gX1fBat3bV', redirectUri: 'http://beesearch.fr/logged' })
 
 ```
 
@@ -16,7 +16,7 @@ Insert a user in the database:
 
 ```
 
-db.oauthusers.save({ id: '1', username: 'johndoe', password:'534b44a19bf18d20b71ecc4eb77c572f', firstname: 'John', lastname: 'Doe' })
+db.oauthusers.save({ username: 'johndoe', password:'534b44a19bf18d20b71ecc4eb77c572f', firstname: 'John', lastname: 'Doe' })
 
 ```
 

@@ -33,7 +33,7 @@ require('./app/db/setup');
 // Express setup
 var app = express();
 app.configure(function () {
-	var oauth = oauthserver({
+	app.oauth = oauthserver({
 		accessTokenLifetime: 15,
 		refreshTokenLifetime: 60,
 		model: require('./app/oauth/mongoose-oauth-model'),
@@ -43,26 +43,20 @@ app.configure(function () {
 	app.use(enableCORS);
 	app.use(express.logger());
 	app.use(express.bodyParser());
-	if (config.oauth.enabled) {
-		app.use(oauth.handler());
-		app.use(oauth.errorHandler());
-		console.log ('Oauth 2.0 is enabled');
-	};
 	app.use(app.router);
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
+app.all('/oauth/token', app.oauth.grant());
+
 // Schemas and controllers
-//require('./app/models/contactsSchema');
-//var contacts = require('./app/controllers/contacts')
 var elastic = require('./app/controllers/elastic');
 
 // Routes
-//app.get('/contacts', contacts.findAll);
-//app.get('/contacts/:id', contacts.findById);
-//app.put('/contacts', contacts.create);
-app.get('/search', elastic.search);
-app.get('/data', elastic.getData);
+app.get('/search', app.oauth.authorise(), elastic.search);
+app.get('/data', app.oauth.authorise(), elastic.getData);
+
+app.use(app.oauth.errorHandler());
 
 // Keys definition for HTTPS
 var options = {

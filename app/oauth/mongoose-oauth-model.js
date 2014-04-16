@@ -6,23 +6,23 @@ var mongoose = require('mongoose'),
 // Schemas definitions
 //
 var OAuthAccessTokensSchema = new Schema({
-	access_token: { type: String },
-	client_id: { type: String },
-	user_id: { type: String },
+	accessToken: { type: String },
+	clientId: { type: String },
+	userId: { type: String },
 	expires: { type: Date }
 });
 
 var OAuthRefreshTokensSchema = new Schema({
-	refresh_token: { type: String },
-	client_id: { type: String },
-	user_id: { type: String },
+	refreshToken: { type: String },
+	clientId: { type: String },
+	userId: { type: String },
 	expires: { type: Date }
 });
 
 var OAuthClientsSchema = new Schema({
-	client_id: { type: String },
-	client_secret: { type: String },
-	redirect_uri: { type: String }
+	clientId: { type: String },
+	clientSecret: { type: String },
+	redirectUri: { type: String }
 });
 
 var OAuthUsersSchema = new Schema({
@@ -47,22 +47,22 @@ var OAuthAccessTokensModel = mongoose.model('OAuthAccessTokens'),
 // node-oauth2-server callbacks
 //
 model.getAccessToken = function (bearerToken, callback) {
-	//console.log('in getAccessToken (bearerToken: ' + bearerToken + ')');
+	console.log('in getAccessToken (bearerToken: ' + bearerToken + ')');
 
-	OAuthAccessTokensModel.findOne({ access_token: bearerToken }, callback);
+	OAuthAccessTokensModel.findOne({ accessToken: bearerToken }, callback);
 };
 
 model.getClient = function (clientId, clientSecret, callback) {
-	//console.log('in getClient (clientId: ' + clientId + ', clientSecret: ' + clientSecret + ')');
+	console.log('in getClient (clientId: ' + clientId + ', clientSecret: ' + clientSecret + ')');
 
-	OAuthClientsModel.findOne({ client_id: clientId, client_secret: clientSecret }, callback);
+	OAuthClientsModel.findOne({ clientId: clientId, clientSecret: clientSecret }, callback);
 };
 
 // This will very much depend on your setup, I wouldn't advise doing anything exactly like this but
 // it gives an example of how to use the method to resrict certain grant types
 var authorizedClientIds = ['s6BhdRkqt3', 'toto'];
 model.grantTypeAllowed = function (clientId, grantType, callback) {
-	//console.log('in grantTypeAllowed (clientId: ' + clientId + ', grantType: ' + grantType + ')');
+	console.log('in grantTypeAllowed (clientId: ' + clientId + ', grantType: ' + grantType + ')');
 
 	if (grantType === 'password') {
 		return callback(false, authorizedClientIds.indexOf(clientId) >= 0);
@@ -71,13 +71,13 @@ model.grantTypeAllowed = function (clientId, grantType, callback) {
 	callback(false, true);
 };
 
-model.saveAccessToken = function (accessToken, clientId, userId, expires, callback) {
-	//console.log('in saveAccessToken (accessToken: ' + accessToken + ', clientId: ' + clientId + ', userId: ' + userId + ', expires: ' + expires + ')');
-	
+model.saveAccessToken = function (accessToken, clientId, expires, userId, callback) {
+	console.log('in saveAccessToken (accessToken: ' + accessToken + ', clientId: ' + clientId + ', expires: ' + expires + ', userId: ' + userId._id + ')');
+
 	var accessToken = new OAuthAccessTokensModel({
-		access_token: accessToken,
-		client_id: clientId,
-		user_id: userId,
+		accessToken: accessToken,
+		clientId: clientId,
+		userId: userId._id,
 		expires: expires
 	});
 
@@ -88,7 +88,7 @@ model.saveAccessToken = function (accessToken, clientId, userId, expires, callba
  * Required to support password grant type
  */
 model.getUser = function (username, password, callback) {
-	//console.log('in getUser (username: ' + username + ', password: ' + password + ')');
+	console.log('in getUser (username: ' + username + ', password: ' + password + ')');
 
 	OAuthUsersModel.findOne({ username: username, password: password }, callback);
 };
@@ -96,13 +96,13 @@ model.getUser = function (username, password, callback) {
 /*
  * Required to support refresh_token grant type
  */
-model.saveRefreshToken = function (refreshToken, clientId, userId, expires, callback) {
-	//console.log('in saveRefreshToken (refreshToken: ' + refreshToken + ', clientId: ' + clientId +', userId: ' + userId + ', expires: ' + expires + ')');
+model.saveRefreshToken = function (refreshToken, clientId, expires, userId, callback) {
+	console.log('in saveRefreshToken (refreshToken: ' + refreshToken + ', clientId: ' + clientId +', expires: ' + expires + ', userId: ' + userId._id + ')');
 
 	var refreshToken = new OAuthRefreshTokensModel({
-		refresh_token: refreshToken,
-		client_id: clientId,
-		user_id: userId,
+		refreshToken: refreshToken,
+		clientId: clientId,
+		userId: userId._id,
 		expires: expires
 	});
 
@@ -110,7 +110,7 @@ model.saveRefreshToken = function (refreshToken, clientId, userId, expires, call
 };
 
 model.getRefreshToken = function (refreshToken, callback) {
-	//console.log('in getRefreshToken (refreshToken: ' + refreshToken + ')');
+	console.log('in getRefreshToken (refreshToken: ' + refreshToken + ')');
 
-	OAuthRefreshTokensModel.findOne({ refresh_token: refreshToken }, callback);
+	OAuthRefreshTokensModel.findOne({ refreshToken: refreshToken }, callback);
 };
