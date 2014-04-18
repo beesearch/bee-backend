@@ -12,11 +12,11 @@ db.oauthclients.save({ clientId: 's6BhdRkqt3', clientSecret: 'gX1fBat3bV', redir
 
 ```
 
-Insert a user in the database:
+Insert a user in the database, hashed password correspond to string 'test':
 
 ```
 
-db.oauthusers.save({ username: 'johndoe', password:'534b44a19bf18d20b71ecc4eb77c572f', firstname: 'John', lastname: 'Doe' })
+db.oauthusers.save({ username: 'test', password:'sha1$ecba9c34$1$3755d087373500dec6cd077367158c6e5bb49779', firstname: 'Alex', lastname: 'Doe' })
 
 ```
 

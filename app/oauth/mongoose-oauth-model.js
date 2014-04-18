@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+	passwordHash = require('password-hash'),
 	Schema = mongoose.Schema,
 	model = module.exports;
 
@@ -90,7 +91,24 @@ model.saveAccessToken = function (accessToken, clientId, expires, userId, callba
 model.getUser = function (username, password, callback) {
 	console.log('in getUser (username: ' + username + ', password: ' + password + ')');
 
-	OAuthUsersModel.findOne({ username: username, password: password }, callback);
+	// Retrieve sha1 hashed password
+	OAuthUsersModel.findOne({ username: username }, function (err, user) {
+		if (err) return callback(err);
+
+		// user not found
+		if (!user) {
+			return callback(err, user);
+		}
+
+		// Password entered match the one hashed ?
+		if (passwordHash.verify(password, user.password)) {
+			// password match!
+			return callback(err, user);
+		} else {
+			// password doesn't match
+			return callback(err, false);
+		}
+	})
 };
 
 /*
