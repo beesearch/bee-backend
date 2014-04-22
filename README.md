@@ -16,11 +16,11 @@ Insert a user in the database, hashed password correspond to string 'test':
 
 ```
 
-db.oauthusers.save({ username: 'test', password:'$2a$10$BpEsMD.X9BLXoTzvxetHEeLR51peGeiHaa2LMCgALSlw1XlwcEFpe', firstname: 'Alex', lastname: 'Doe' })
+db.oauthusers.save({ username: 'alex', password:'$2a$10$BpEsMD.X9BLXoTzvxetHEeLR51peGeiHaa2LMCgALSlw1XlwcEFpe', firstname: 'Alex', lastname: 'Doe' })
 
 ```
 
-Password are hashed using bcrypt : https://github.com/ncb000gt/node.bcrypt.js, following these recomendations : http://codahale.com/how-to-safely-store-a-password/
+Passwords are hashed using bcrypt : https://github.com/ncb000gt/node.bcrypt.js, following these recomendations : [How To Safely Store A Password](http://codahale.com/how-to-safely-store-a-password/).
 
 To get an access token, launch a POST request on /oauth/token:
 
@@ -31,7 +31,7 @@ Host: server.example.com
 Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=password&username=johndoe&password=534b44a19bf18d20b71ecc4eb77c572f
+grant_type=password&username=alex&password=test
 
 ```
 
