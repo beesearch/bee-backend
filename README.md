@@ -16,9 +16,11 @@ Insert a user in the database, hashed password correspond to string 'test':
 
 ```
 
-db.oauthusers.save({ username: 'test', password:'sha1$ecba9c34$1$3755d087373500dec6cd077367158c6e5bb49779', firstname: 'Alex', lastname: 'Doe' })
+db.oauthusers.save({ username: 'test', password:'$2a$10$BpEsMD.X9BLXoTzvxetHEeLR51peGeiHaa2LMCgALSlw1XlwcEFpe', firstname: 'Alex', lastname: 'Doe' })
 
 ```
+
+Password are hashed using bcrypt : https://github.com/ncb000gt/node.bcrypt.js, following these recomendations : http://codahale.com/how-to-safely-store-a-password/
 
 To get an access token, launch a POST request on /oauth/token:
 

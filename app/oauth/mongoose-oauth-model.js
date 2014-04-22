@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-	passwordHash = require('password-hash'),
+	bcrypt = require('bcrypt'),
 	Schema = mongoose.Schema,
 	model = module.exports;
 
@@ -101,13 +101,15 @@ model.getUser = function (username, password, callback) {
 		}
 
 		// Password entered match the one hashed ?
-		if (passwordHash.verify(password, user.password)) {
-			// password match!
-			return callback(err, user);
-		} else {
-			// password doesn't match
-			return callback(err, false);
-		}
+		bcrypt.compare(password, user.password, function(err, res) {
+			if (res === true) {
+				// password match!
+				return callback(err, user);
+			} else {
+				// password doesn't match
+				return callback(err, false);
+			}
+		});
 	})
 };
 
