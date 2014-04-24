@@ -20,7 +20,7 @@ db.oauthusers.save({ username: 'alex', password:'$2a$10$BpEsMD.X9BLXoTzvxetHEeLR
 
 ```
 
-Passwords are hashed using bcrypt : https://github.com/ncb000gt/node.bcrypt.js, following these recomendations : [How To Safely Store A Password](http://codahale.com/how-to-safely-store-a-password/).
+Passwords are hashed using [bcrypt](https://github.com/ncb000gt/node.bcrypt.js), following these recomendations : [How To Safely Store A Password](http://codahale.com/how-to-safely-store-a-password/).
 
 To get an access token, launch a POST request on /oauth/token:
 

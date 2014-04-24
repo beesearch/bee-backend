@@ -42,7 +42,7 @@ app.configure(function () {
 	app.use(express.logger());
 	app.use(express.bodyParser());
 	app.use(app.router);
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+	app.use(express.errorHandler({ dumpExceptions: false, showStack: true }));
 });
 
 app.all('/oauth/token', app.oauth.grant());
@@ -51,8 +51,8 @@ app.all('/oauth/token', app.oauth.grant());
 var elastic = require('./app/controllers/elastic');
 
 // Routes
-app.get('/search', app.oauth.authorise(), elastic.search);
-app.get('/data', app.oauth.authorise(), elastic.getData);
+app.get('/elastic', app.oauth.authorise(), elastic.search);
+//app.get('/data', app.oauth.authorise(), elastic.data);
 
 app.use(app.oauth.errorHandler());
 
