@@ -1,0 +1,11 @@
+ {
+	"https": {
+		"enabled" : true
+	},
+	"http": {
+		"enabled" : false
+	},
+	"oauth": {
+		"enabled" : true
+	}
+}

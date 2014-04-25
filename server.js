@@ -1,12 +1,14 @@
 // Dependencies
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
-var express = require('express');
-var oauthserver = require('node-oauth2-server');
+var fs = require('fs'),
+	http = require('http'),
+	https = require('https'),
+	express = require('express'),
+	oauthserver = require('node-oauth2-server');
 
-// Config
-var config = require('./config.json');
+// Env and config
+var env = process.env.NODE_ENV || 'development',
+	config = require('./config.' + env + '.json');
+console.log('### Environment: ' + env);
 
 var enableCORS = function(req, res, next) {
 	// Website you wish to allow to connect
@@ -34,6 +36,8 @@ require('./app/db/setup');
 var app = express();
 app.configure(function () {
 	app.oauth = oauthserver({
+		accessTokenLifetime: 3600, // 1 hour
+		refreshTokenLifetime: 86400, // 1 day
 		model: require('./app/oauth/mongoose-oauth-model'),
 		grants: ['password', 'refresh_token'],
 		debug: true
@@ -56,18 +60,20 @@ app.get('/elastic', app.oauth.authorise(), elastic.search);
 
 app.use(app.oauth.errorHandler());
 
-// Keys definition for HTTPS
-var options = {
-  key: fs.readFileSync('keys/bee-key.pem'),
-  cert: fs.readFileSync('keys/bee-cert.pem')
-};
-
 // Show must go on!
-if (config.http.enabled) {
-	http.createServer(app).listen(config.http.port);
-	console.log ('Server started: HTTP listening on port ' + config.http.port);
-}
 if (config.https.enabled) {
-	https.createServer(options, app).listen(config.https.port);
-	console.log ('Server started: HTTPS listening on port ' + config.https.port);
+	var port = process.env.PORT || 443;
+
+	// Keys definition for HTTPS
+	var options = {
+		key: fs.readFileSync('keys/bee-key.pem'),
+		cert: fs.readFileSync('keys/bee-cert.pem')
+	};
+
+	https.createServer(options, app).listen(port);
+	console.log ('### Server started: HTTPS listening on port ' + port);
+} else if (config.http.enabled) {
+	var port = process.env.PORT || 80;
+	http.createServer(app).listen(port);
+	console.log ('### Server started: HTTP listening on port ' + port);
 }
