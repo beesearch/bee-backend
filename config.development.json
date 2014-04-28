@@ -6,6 +6,6 @@
 		"enabled" : true
 	},
 	"oauth": {
-		"enabled" : true
+		"enabled" : false
 	}
 }

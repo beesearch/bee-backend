@@ -73,12 +73,12 @@ model.grantTypeAllowed = function (clientId, grantType, callback) {
 };
 
 model.saveAccessToken = function (accessToken, clientId, expires, userId, callback) {
-	console.log('in saveAccessToken (accessToken: ' + accessToken + ', clientId: ' + clientId + ', expires: ' + expires + ', userId: ' + userId._id + ')');
+	console.log('in saveAccessToken (accessToken: ' + accessToken + ', clientId: ' + clientId + ', expires: ' + expires + ', userId: ' + userId + ')');
 
 	var accessToken = new OAuthAccessTokensModel({
 		accessToken: accessToken,
 		clientId: clientId,
-		userId: userId._id,
+		userId: userId.id,
 		expires: expires
 	});
 
@@ -117,12 +117,12 @@ model.getUser = function (username, password, callback) {
  * Required to support refresh_token grant type
  */
 model.saveRefreshToken = function (refreshToken, clientId, expires, userId, callback) {
-	console.log('in saveRefreshToken (refreshToken: ' + refreshToken + ', clientId: ' + clientId +', expires: ' + expires + ', userId: ' + userId._id + ')');
+	console.log('in saveRefreshToken (refreshToken: ' + refreshToken + ', clientId: ' + clientId +', expires: ' + expires + ', userId: ' + JSON.stringify(userId) + ')');
 
 	var refreshToken = new OAuthRefreshTokensModel({
 		refreshToken: refreshToken,
 		clientId: clientId,
-		userId: userId._id,
+		userId: userId.id,
 		expires: expires
 	});
 

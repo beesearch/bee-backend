@@ -6,8 +6,8 @@ exports.search = function(req, res) {
 	var page = parseInt(req.query.page) | 1;
 	var length = parseInt(req.query.length) | 10;
 	console.log('search: ' + search);
-	console.log('page: ' + page);
-	console.log('length: ' + length);
+	//console.log('page: ' + page);
+	//console.log('length: ' + length);
 
 	// Calculating start and end elements
 	var start = (page - 1) * length;
@@ -18,7 +18,7 @@ exports.search = function(req, res) {
 		result.push({'id': i, 'text': 'Result number: ' + i, 'now': new Date().toJSON()});
 	};
 
-	console.log('result: ' + JSON.stringify(result));
+	//console.log('result: ' + JSON.stringify(result));
 	res.send(result);
 }
 

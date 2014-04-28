@@ -46,19 +46,27 @@ app.configure(function () {
 	app.use(express.logger());
 	app.use(express.bodyParser());
 	app.use(app.router);
-	app.use(express.errorHandler({ dumpExceptions: false, showStack: true }));
+	app.use(express.errorHandler());
+	app.use(app.oauth.errorHandler());
 });
-
-app.all('/oauth/token', app.oauth.grant());
 
 // Schemas and controllers
 var elastic = require('./app/controllers/elastic');
 
+// OAuth configuration
+if (config.oauth.enabled) {
+	console.log('### OAuth 2.0 is enabled');
+	app.all('/oauth/token', app.oauth.grant());
+} else {
+	console.log('### OAuth 2.0 is disabled');
+	// Override the authorise function
+	app.oauth.authorise = function () {
+		return function (req, res, next) { next(); };
+	};
+}
+
 // Routes
 app.get('/elastic', app.oauth.authorise(), elastic.search);
-//app.get('/data', app.oauth.authorise(), elastic.data);
-
-app.use(app.oauth.errorHandler());
 
 // Show must go on!
 if (config.https.enabled) {
@@ -73,7 +81,7 @@ if (config.https.enabled) {
 	https.createServer(options, app).listen(port);
 	console.log ('### Server started: HTTPS listening on port ' + port);
 } else if (config.http.enabled) {
-	var port = process.env.PORT || 80;
+	var port = process.env.PORT || 8080;
 	http.createServer(app).listen(port);
 	console.log ('### Server started: HTTP listening on port ' + port);
 }
