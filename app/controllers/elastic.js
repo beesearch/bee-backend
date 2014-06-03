@@ -1,15 +1,15 @@
 var elasticsearch = require('elasticsearch');
 
 var client = new elasticsearch.Client({
-  host: 'vps67962.ovh.net:9200',
+  host: 'localhost:9200',
   log: 'trace'
 });
 
 exports.search = function(req, res) {
-  console.log('in search');
+  console.log('### in search');
 
   var search = req.query.search;
-  console.log('search: ' + search);
+  console.log('#### search: ' + search);
 
   client.search({
     q: search

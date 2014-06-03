@@ -76,9 +76,17 @@ $ openssl x509 -req -in certrequest.csr -signkey bee-key.pem -out bee-cert.pem
 
 ```
 
-Finally configure the server:
+Finally start the server:
 ```bash
 
-$ cp config.json.sample config.json
+$ node server.js
 
 ```
+
+To start in a production environment, use:
+```bash
+
+$ NODE_ENV=production node server.js
+
+```
+Config file `config.production.json` will be used.

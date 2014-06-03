@@ -70,7 +70,7 @@ app.get('/elastic', app.oauth.authorise(), elastic.search);
 
 // Show must go on!
 if (config.https.enabled) {
-	var port = process.env.PORT || 443;
+	var port = config.https.port || 443;
 
 	// Keys definition for HTTPS
 	var options = {
@@ -81,7 +81,7 @@ if (config.https.enabled) {
 	https.createServer(options, app).listen(port);
 	console.log ('### Server started: HTTPS listening on port ' + port);
 } else if (config.http.enabled) {
-	var port = process.env.PORT || 8080;
+	var port = config.http.port || 80;
 	http.createServer(app).listen(port);
 	console.log ('### Server started: HTTP listening on port ' + port);
 }

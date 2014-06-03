@@ -1,11 +1,16 @@
  {
 	"https": {
-		"enabled" : true
+		"enabled": true,
+		"port": 443
 	},
 	"http": {
-		"enabled" : false
+		"enabled": false,
+		"port": 80
 	},
 	"oauth": {
-		"enabled" : true
+		"enabled": true
+	},
+	"elasticsearch": {
+		"host": "localhost:9200"
 	}
 }
