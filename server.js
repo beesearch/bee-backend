@@ -66,7 +66,7 @@ if (config.oauth.enabled) {
 }
 
 // Routes
-app.get('/elastic', app.oauth.authorise(), elastic.search);
+app.get('/elastic', app.oauth.authorise(), elastic.customerFuzzySearch);
 
 // Show must go on!
 if (config.https.enabled) {
