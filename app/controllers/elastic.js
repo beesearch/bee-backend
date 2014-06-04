@@ -10,7 +10,7 @@ var client = new elasticsearch.Client({
 });
 
 
-// Recherche dans les noms et prenoms des customers avec approximation
+// Recherche dans les noms et prenoms des clients avec approximation
 //
 //    Params :
 //    * subsidiary = le nom de la filiale (qn, snrf, fta)
@@ -31,6 +31,39 @@ exports.customerFuzzySearch = function(req, res) {
         fuzzy_like_this: {
           like_text: search,
           fields: ["firstName", "lastName"]
+        }
+      }
+    }
+  }).then(function (body) {
+    var hits = body.hits.hits;
+    //console.log(hits);
+    res.send(hits);
+  }, function (error) {
+    console.log(error.message);
+  });  
+}
+
+// Recherche dans les noms de produit avec approximation
+//
+//    Params :
+//    * subsidiary = le nom de la filiale (qn, snrf, fta)
+//    * search = le text a rechercher 
+//
+exports.productFuzzySearch = function(req, res) {
+  console.log('### in productFuzzySearch');
+
+  var subsidiary = req.query.subsidiary
+  var search = req.query.search;
+  console.log('#### search: ' + req.query.subsidiary);
+
+  client.search({
+    index: subsidiary,
+    type: 'product',
+    body: {
+      query: {
+        fuzzy_like_this: {
+          like_text: search,
+          fields: ["name"]
         }
       }
     }
