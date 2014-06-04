@@ -66,8 +66,8 @@ if (config.oauth.enabled) {
 }
 
 // Routes
-app.get('/elastic', app.oauth.authorise(), elastic.customerFuzzySearch);
-//app.get('/elastic/product', app.oauth.authorise(), elastic.productFuzzySearch);
+app.get('/elastic/customer', app.oauth.authorise(), elastic.customerFuzzySearch);
+app.get('/elastic/product', app.oauth.authorise(), elastic.productFuzzySearch);
 
 // Show must go on!
 if (config.https.enabled) {
