@@ -11,6 +11,7 @@
 		"enabled": true
 	},
 	"elasticsearch": {
-		"host": "localhost:9200"
+		"host": "localhost:9200",
+		"log": "warning" //trace, debug, info, warning, error 
 	}
 }

@@ -6,7 +6,7 @@ var env = process.env.NODE_ENV || 'development',
 
 var client = new elasticsearch.Client({
   host: config.elasticsearch.host,
-  //log: 'trace'
+  log: config.elasticsearch.log
 });
 
 

@@ -11,6 +11,7 @@
 		"enabled": false
 	},
 	"elasticsearch": {
-		"host": "vps67962.ovh.net:9200"
+		"host": "vps67962.ovh.net:9200",
+		"log" : "debug" //trace, debug, info, warning, error 
 	}
 }
