@@ -66,6 +66,7 @@ if (config.oauth.enabled) {
 }
 
 // Routes
+app.get('/elastic', app.oauth.authorise(), elastic.fuzzySearch);
 app.get('/elastic/customer', app.oauth.authorise(), elastic.customerFuzzySearch);
 app.get('/elastic/product', app.oauth.authorise(), elastic.productFuzzySearch);
 
