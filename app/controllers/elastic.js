@@ -1,7 +1,11 @@
 var elasticsearch = require('elasticsearch');
 
+// config
+var env = process.env.NODE_ENV || 'development',
+  config = require('../../config.' + env + '.json');
+
 var client = new elasticsearch.Client({
-  host: 'localhost:9200',
+  host: config.elasticsearch.host,
   log: 'trace'
 });
 
@@ -18,10 +22,6 @@ exports.search = function(req, res) {
     console.log(hits);
     res.send(hits);
   }, function (error) {
-    console.trace(error.message);
+    console.log(error.message);
   });
-}
-
-exports.data = function(req, res) {
-  res.send({'type': 'Hello', 'now': new Date().toJSON()});
 }
