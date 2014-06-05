@@ -1,17 +1,17 @@
- {
+{
 	"https": {
 		"enabled": false,
 		"port": 443
 	},
 	"http": {
 		"enabled": true,
-		"port": 8081
+		"port": 80
 	},
 	"oauth": {
-		"enabled": false
+		"enabled": true
 	},
 	"elasticsearch": {
-		"host": "vps67962.ovh.net:9200",
+		"host": "localhost:9200",
 		"log" : "debug" 
 	}
 }
