@@ -35,21 +35,15 @@ exports.fuzzySearch = function(req, res) {
     }
   }).then(function (body) {
     var hits = body.hits.hits;
-    //console.log(hits);
     res.send(hits);
   }, function (error) {
     console.log(error.message);
   });  
 }
 
-// Recherche dans les noms et prenoms des clients avec approximation
-//
-//    Params :
-//    * subsidiary = le nom de la filiale (qn, snrf, fta)
-//    * search = le texte à rechercher
-//
-exports.customerFuzzySearch = function(req, res) {
-  console.log('### in customerFuzzySearch');
+
+exports.tagCloud = function(req, res) {
+  console.log('### in tagCloud');
 
   var subsidiary = req.query.subsidiary
   var search = req.query.search;
@@ -57,55 +51,26 @@ exports.customerFuzzySearch = function(req, res) {
   console.log('#### search: ' + req.query.search);
 
   client.search({
-    index: subsidiary,
-    type: 'customer',
+    index: 'qn',
+    size: 1,
     body: {
-      query: {
-        fuzzy_like_this: {
-          like_text: search,
-          fields: ["firstName", "lastName"]
+      "query" : {
+          "match_all" : {}
+        },
+
+        "facets" : {
+            "tagcloud" : {
+                "terms" : { "field" : "name", "size" : 5  }
+            }
         }
-      }
     }
-  }).then(function (body) {
-    var hits = body.hits.hits;
-    //console.log(hits);
+  }).then(function (response) {
+    var hits = response.facets.tagcloud.terms;
     res.send(hits);
   }, function (error) {
     console.log(error.message);
   });  
 }
 
-// Recherche dans les noms de produit avec approximation
-//
-//    Params :
-//    * subsidiary = le nom de la filiale (qn, snrf, fta)
-//    * search = le texte à rechercher
-//
-exports.productFuzzySearch = function(req, res) {
-  console.log('### in productFuzzySearch');
 
-  var subsidiary = req.query.subsidiary
-  var search = req.query.search;
-  console.log('#### subsidiary: ' + req.query.subsidiary);
-  console.log('#### search: ' + req.query.search);
 
-  client.search({
-    index: subsidiary,
-    type: 'product',
-    body: {
-      query: {
-        fuzzy_like_this: {
-          like_text: search,
-          fields: ["name"]
-        }
-      }
-    }
-  }).then(function (body) {
-    var hits = body.hits.hits;
-    //console.log(hits);
-    res.send(hits);
-  }, function (error) {
-    console.log(error.message);
-  });  
-}
