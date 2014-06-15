@@ -42,13 +42,8 @@ exports.fuzzySearch = function(req, res) {
 }
 
 
-exports.tagCloud = function(req, res) {
-  console.log('### in tagCloud');
-
-  var subsidiary = req.query.subsidiary
-  var search = req.query.search;
-  console.log('#### subsidiary: ' + req.query.subsidiary);
-  console.log('#### search: ' + req.query.search);
+exports.topFiveProduct = function(req, res) {
+  console.log('### in topFiveProduct');
 
   client.search({
     index: 'qn',
@@ -59,13 +54,13 @@ exports.tagCloud = function(req, res) {
         },
 
         "facets" : {
-            "tagcloud" : {
+            "tag" : {
                 "terms" : { "field" : "name", "size" : 5  }
             }
         }
     }
   }).then(function (response) {
-    var hits = response.facets.tagcloud.terms;
+    var hits = response.facets.tag.terms;
     res.send(hits);
   }, function (error) {
     console.log(error.message);

@@ -67,7 +67,7 @@ if (config.oauth.enabled) {
 
 // Routes
 app.get('/elastic', app.oauth.authorise(), elastic.fuzzySearch);
-app.get('/elastic/beeTagCloud', app.oauth.authorise(), elastic.tagCloud);
+app.get('/topFiveProduct', app.oauth.authorise(), elastic.topFiveProduct);
 
 // Show must go on!
 if (config.https.enabled) {
