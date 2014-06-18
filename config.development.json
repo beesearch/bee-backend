@@ -11,7 +11,7 @@
 		"enabled": true
 	},
 	"elasticsearch": {
-		"host": "localhost:9200",
+		"host": "vps67962.ovh.net:9200",
 		"log" : "info" 
 	}
 }

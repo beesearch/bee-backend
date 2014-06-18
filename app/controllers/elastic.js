@@ -40,32 +40,3 @@ exports.fuzzySearch = function(req, res) {
     console.log(error.message);
   });  
 }
-
-
-exports.topFiveProduct = function(req, res) {
-  console.log('### in topFiveProduct');
-
-  client.search({
-    index: 'qn',
-    size: 1,
-    body: {
-      "query" : {
-          "match_all" : {}
-        },
-
-        "facets" : {
-            "tag" : {
-                "terms" : { "field" : "name", "size" : 5  }
-            }
-        }
-    }
-  }).then(function (response) {
-    var hits = response.facets.tag.terms;
-    res.send(hits);
-  }, function (error) {
-    console.log(error.message);
-  });  
-}
-
-
-

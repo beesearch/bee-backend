@@ -52,6 +52,7 @@ app.configure(function () {
 
 // Schemas and controllers
 var elastic = require('./app/controllers/elastic');
+var model = require('./app/controllers/model');
 
 // OAuth configuration
 if (config.oauth.enabled) {
@@ -67,7 +68,7 @@ if (config.oauth.enabled) {
 
 // Routes
 app.get('/elastic', app.oauth.authorise(), elastic.fuzzySearch);
-app.get('/elastic/topFiveProduct', app.oauth.authorise(), elastic.topFiveProduct);
+app.get('/model/:model/id/:id', app.oauth.authorise(), model.getModel);
 
 // Show must go on!
 if (config.https.enabled) {
