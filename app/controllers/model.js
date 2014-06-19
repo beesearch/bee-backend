@@ -22,13 +22,17 @@ function getCompany(id, req, res) {
 		index: 'qn',
 		size: 1,
 		body: {
-			"query" : {
-				"match_all" : {}
-			},
-
-			"facets" : {
-				"tag" : {
-					"terms" : { "field" : "name", "size" : 5  }
+			{
+				"query": {
+					"term" : { "companyId" : id }
+				},
+				"facets": {
+					"tag" : {
+						"terms" : {
+							"field" : "productId",
+							"size" : 10
+						}
+					}
 				}
 			}
 		}
@@ -45,20 +49,20 @@ function getCompany(id, req, res) {
 }
 
 function fromFacetsToChart(facets) {
-  // Chart structure
-  var chart = {
-    title: 'Top 5 produits',
-    type: 'pie',
-    series: [{
-      data: []
-    }]
-  };
+	// Chart structure
+	var chart = {
+		title: 'Top 5 produits',
+		type: 'pie',
+		series: [{
+			data: []
+		}]
+	};
 
-  // terms to serie's datas
-  for (var i = 0; i < facets.tag.terms.length; i++) {
-    var obj = facets.tag.terms[i];
-    chart.series[0].data.push({'name': obj.term, 'y': obj.count});
-  };
+	// terms to serie's datas
+	for (var i = 0; i < facets.tag.terms.length; i++) {
+		var obj = facets.tag.terms[i];
+		chart.series[0].data.push({'name': obj.term, 'y': obj.count});
+	};
 
-  return chart;
+	return chart;
 }

@@ -58,7 +58,7 @@ app.configure(function () {
 	app.use(app.oauth.errorHandler());
 });
 
-// Schemas and controllers
+// Controllers
 var elastic = require('./app/controllers/elastic');
 var model = require('./app/controllers/model');
 
