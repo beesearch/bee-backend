@@ -1,13 +1,5 @@
-var elasticsearch = require('elasticsearch');
-
-// config
-var env = process.env.NODE_ENV || 'development',
-  config = require('../../config.' + env + '.json');
-
-var client = new elasticsearch.Client({
-  host: config.elasticsearch.host,
-  log: config.elasticsearch.log
-});
+// ElasticSearch client
+var esclient = require('../../server').esclient;
 
 exports.getModel = function(req, res) {
 	console.log('### in getModel (model: ' + req.param("model") + ' , id: ' + req.param("id") + ')');
@@ -26,7 +18,7 @@ exports.getModel = function(req, res) {
 }
 
 function getCompany(id, req, res) {
-	client.search({
+	esclient.search({
 		index: 'qn',
 		size: 1,
 		body: {

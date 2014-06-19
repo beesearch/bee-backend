@@ -1,13 +1,5 @@
-var elasticsearch = require('elasticsearch');
-
-// config
-var env = process.env.NODE_ENV || 'development',
-  config = require('../../config.' + env + '.json');
-
-var client = new elasticsearch.Client({
-  host: config.elasticsearch.host,
-  log: config.elasticsearch.log
-});
+// ElasticSearch client
+var esclient = require('../../server').esclient;
 
 // Recherche dans tout
 //
@@ -23,7 +15,7 @@ exports.fuzzySearch = function(req, res) {
   console.log('#### subsidiary: ' + req.query.subsidiary);
   console.log('#### search: ' + req.query.search);
 
-  client.search({
+  esclient.search({
     index: subsidiary,
     //type: 'customer',
     body: {

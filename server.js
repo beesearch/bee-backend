@@ -3,7 +3,8 @@ var fs = require('fs'),
 	http = require('http'),
 	https = require('https'),
 	express = require('express'),
-	oauthserver = require('node-oauth2-server');
+	oauthserver = require('node-oauth2-server'),
+	elasticsearch = require('elasticsearch');
 
 // Env and config
 var env = process.env.NODE_ENV || 'development',
@@ -31,6 +32,13 @@ var enableCORS = function(req, res, next) {
 
 // MongoDB setup
 require('./app/db/setup');
+
+// ElasticSearch setup
+var esclient = new elasticsearch.Client({
+  host: config.elasticsearch.host,
+  log: config.elasticsearch.log
+});
+exports.esclient = esclient;
 
 // Express setup
 var app = express();
