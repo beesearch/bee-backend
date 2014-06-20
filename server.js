@@ -76,7 +76,7 @@ if (config.oauth.enabled) {
 
 // Routes
 app.get('/elastic', app.oauth.authorise(), elastic.fuzzySearch);
-app.get('/model/:model/id/:id', app.oauth.authorise(), model.getModel);
+app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
 
 // Show must go on!
 if (config.https.enabled) {
