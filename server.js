@@ -58,10 +58,6 @@ app.configure(function () {
 	app.use(app.oauth.errorHandler());
 });
 
-// Controllers
-var elastic = require('./app/controllers/elastic');
-var model = require('./app/controllers/model');
-
 // OAuth configuration
 if (config.oauth.enabled) {
 	console.log('### OAuth 2.0 is enabled');
@@ -73,6 +69,10 @@ if (config.oauth.enabled) {
 		return function (req, res, next) { next(); };
 	};
 }
+
+// Controllers
+var elastic = require('./app/controllers/elastic');
+var model = require('./app/controllers/model');
 
 // Routes
 app.get('/elastic', app.oauth.authorise(), elastic.fuzzySearch);
