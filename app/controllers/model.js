@@ -21,7 +21,8 @@ exports.getModel = function(req, res) {
 }
 
 function getCompany(type, index, id, res) {
-
+	console.log('#### in getCompany (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
+	// Parallel calls
 	async.parallel({
 		companyDatas: function(callback) { getCompanyDatas(type, index, id, callback) },
 		companyTop5Chart: function(callback) { getCompanyTop5ProductsChart(type, index, id, callback) }
@@ -39,13 +40,12 @@ function getCompanyDatas(type, index, id, callback) {
 		size: 1,
 		body: {
 			query: {
-				term : { id : id }
+				term : { "customer.company.id" : id }
 			}
 		}
 	}).then(function (response) {
-		// Transform ES response to chart
-		console.log('### ES response: ' + JSON.stringify(response));
-		callback(null, response);
+		// Callback with datas
+		callback(null, response.hits.hits[0]);
 	}, function (error) {
 		console.log(error.message);
 		callback(error);
@@ -53,14 +53,14 @@ function getCompanyDatas(type, index, id, callback) {
 }
 
 function getCompanyTop5ProductsChart(type, index, id, callback) {
-	console.log('#### in getCompanyDatas (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
+	console.log('#### in getCompanyTop5ProductsChart (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
 	esclient.search({
 		index: index,
 		type: 'order',
 		size: 1,
 		body: {
 			query: {
-				term : { id : id }
+				term : { "customer.company.id" : id }
 			},
 			facets: {
 				tag : {
@@ -72,9 +72,11 @@ function getCompanyTop5ProductsChart(type, index, id, callback) {
 			}
 		}
 	}).then(function (response) {
+		response = {"took":3,"timed_out":false,"_shards":{"total":5,"successful":5,"failed":0},"hits":{"total":100,"max_score":0,"hits":[]},"facets":{"terms":{"_type":"terms_stats","missing":0,"terms":[{"term":"boulon","count":832,"total_count":832,"min":100,"max":400,"total":212900,"mean":255.88942307692307},{"term":"ecrou","count":819,"total_count":819,"min":100,"max":400,"total":199100,"mean":243.1013431013431},{"term":"vis","count":776,"total_count":776,"min":100,"max":400,"total":196400,"mean":253.09278350515464},{"term":"joint","count":414,"total_count":414,"min":100,"max":400,"total":106100,"mean":256.280193236715},{"term":"rondelle","count":402,"total_count":402,"min":100,"max":400,"total":103900,"mean":258.4577114427861},{"term":"split","count":401,"total_count":401,"min":100,"max":400,"total":101500,"mean":253.11720698254365}]}}};
 		// Transform ES response to chart
-		console.log('### ES response: ' + JSON.stringify(response));
-		callback(null, response);
+		var chart = fromFacetsToChart(response.facets);
+		// Callback with chart
+		callback(null, chart);
 	}, function (error) {
 		console.log(error.message);
 		callback(error);
@@ -84,16 +86,14 @@ function getCompanyTop5ProductsChart(type, index, id, callback) {
 function fromFacetsToChart(facets) {
 	// Chart structure
 	var chart = {
-		title: 'Top 5 produits',
+		title: { text: 'Top 5 produits' },
 		type: 'pie',
-		series: [{
-			data: []
-		}]
+		series: [{ data: [], name: 'Total' }]
 	};
 
 	// terms to serie's datas
-	for (var i = 0; i < facets.tag.terms.length; i++) {
-		var obj = facets.tag.terms[i];
+	for (var i = 0; i < facets.terms.terms.length; i++) {
+		var obj = facets.terms.terms[i];
 		chart.series[0].data.push({'name': obj.term, 'y': obj.count});
 	};
 

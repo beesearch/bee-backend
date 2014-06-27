@@ -71,11 +71,11 @@ if (config.oauth.enabled) {
 }
 
 // Controllers
-var elastic = require('./app/controllers/elastic');
+var search = require('./app/controllers/search');
 var model = require('./app/controllers/model');
 
 // Routes
-app.get('/elastic', app.oauth.authorise(), elastic.fuzzySearch);
+app.get('/search', app.oauth.authorise(), search.fuzzySearch);
 app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
 
 // Show must go on!
