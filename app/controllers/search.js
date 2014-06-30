@@ -18,10 +18,14 @@ exports.fuzzySearch = function(req, res) {
   esclient.search({
     index: subsidiary,
     //type: 'customer',
-    body: {
-      query: {
-        fuzzy_like_this: {
-          like_text: search
+    body: 
+    {
+      "query": {
+        "match_phrase_prefix": {
+          "company.name": {
+                "query": search,
+                "max_expansions": 5
+          }
         }
       }
     }
