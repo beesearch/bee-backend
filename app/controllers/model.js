@@ -58,7 +58,7 @@ function getCompanyTop5ProductsChart(type, index, id, callback) {
 	esclient.search({
 		index: index,
 		type: 'customer',
-		size: 0,
+		size: 1,
 		body: {
 			query: {
 				term : { "customer.companyId" : id }
