@@ -57,7 +57,7 @@ function getCompanyTop5ProductsChart(type, index, id, callback) {
 	console.log('#### in getCompanyTop5ProductsChart (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
 	esclient.search({
 		index: index,
-		type: 'order',
+		type: 'customer',
 		size: 0,
 		body: {
 			query: {
