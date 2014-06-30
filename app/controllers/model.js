@@ -40,7 +40,7 @@ function getCompanyDatas(type, index, id, callback) {
 		size: 1,
 		body: {
 			query: {
-				term : { "customer.company.id" : id }
+				term : { "customer.companyId" : id }
 			}
 		}
 	}).then(function (response) {
