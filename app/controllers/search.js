@@ -1,14 +1,8 @@
 // ElasticSearch client
 var esclient = require('../../server').esclient;
 
-// Recherche dans tout
-//
-//    Params :
-//    * subsidiary = le nom de la filiale (qn, snrf, fta)
-//    * search = le texte à rechercher
-//
-exports.fuzzySearch = function(req, res) {
-  console.log('### in fuzzySearch');
+exports.companySearch = function(req, res) {
+  console.log('### in companySearch');
 
   var subsidiary = req.query.subsidiary
   var search = req.query.search;

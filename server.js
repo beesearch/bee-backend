@@ -75,7 +75,7 @@ var search = require('./app/controllers/search');
 var model = require('./app/controllers/model');
 
 // Routes
-app.get('/search', app.oauth.authorise(), search.fuzzySearch);
+app.get('/search', app.oauth.authorise(), search.companySearch);
 app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
 
 // Show must go on!
