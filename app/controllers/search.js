@@ -20,6 +20,7 @@ exports.fuzzySearch = function(req, res) {
     //type: 'customer',
     body: 
     {
+      "fields" : ["company.name", "company.siren"],
       "query": {
         "match_phrase_prefix": {
           "company.name": {
