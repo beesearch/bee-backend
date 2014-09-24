@@ -3,6 +3,7 @@ var fs = require('fs'),
 	http = require('http'),
 	https = require('https'),
 	express = require('express'),
+    mongo = require('mongojs'),
 	oauthserver = require('node-oauth2-server'),
 	elasticsearch = require('elasticsearch');
 
@@ -40,6 +41,10 @@ var esclient = new elasticsearch.Client({
 });
 exports.esclient = esclient;
 
+// Mongodb data setup
+var mdbclient = mongo('127.0.0.1:27017/abo', ['customer']);
+exports.mdbclient = mdbclient;
+
 // Express setup
 var app = express();
 app.configure(function () {
@@ -71,12 +76,15 @@ if (config.oauth.enabled) {
 }
 
 // Controllers
+var query = require('./app/controllers/query');
 var search = require('./app/controllers/search');
 var model = require('./app/controllers/model');
 
 // Routes
 app.get('/search', app.oauth.authorise(), search.companySearch);
 app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
+app.get('/query/:collection/index/:index/id/:id', query.testQuery);
+
 
 // Show must go on!
 if (config.https.enabled) {
