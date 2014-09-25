@@ -24,7 +24,8 @@ function getCustomer(collection, index, id, res) {
     console.log('#### in getCompany (collection: ' + collection + ', index: ' + index  + ' , id: ' + id + ')');
     // Parallel calls
     async.parallel({
-        customerDatas: function(callback) { getCustomerDatas(collection, index, id, callback) }
+        customerDatas: function(callback) { getCustomerDatas(collection, index, id, callback) },
+        customerTop5Chart: function(callback) { getCustomerTop5ProductsChart(collection, index, id, callback) }
 
     }, function(err, result) {
         console.log('### Async calls result: ' + JSON.stringify(result));
@@ -35,7 +36,21 @@ function getCustomer(collection, index, id, res) {
 function getCustomerDatas(collection, index, id, callback) {
     console.log('#### in getCompanyDatas (collection: ' + collection + ', index: ' + index  + ' , id: ' + id + ')');
     console.log('### in testQuery');
-    db.customer.find(function(err, docs) {
+    db.customer.find({'total': {$gt: 2000}}, function(err, docs) {
+        callback(null, docs);
+    });
+}
+
+
+function getCustomerTop5ProductsChart(collection, index, id, callback) {
+    console.log('#### in getCompanyDatas (collection: ' + collection + ', index: ' + index  + ' , id: ' + id + ')');
+    console.log('### in testQuery');
+    db.customer.aggregate({ $group :
+        { _id : {customerId: "$customerId", name:"$name", toto:"test"},
+            myTotal : { $sum : "$total" }
+        }},
+        { $match : {'myTotal' : { $gte : 2000 } } },
+        function(err, docs) {
         callback(null, docs);
     });
 }

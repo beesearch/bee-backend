@@ -82,7 +82,7 @@ var model = require('./app/controllers/model');
 
 // Routes
 app.get('/search', app.oauth.authorise(), search.companySearch);
-app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
+app.get('/type/:type/index/:index/id/:id',model.getModel);
 app.get('/query/:collection/index/:index/id/:id', query.testQuery);
 
 
