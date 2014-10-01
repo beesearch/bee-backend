@@ -2,14 +2,11 @@
 var esclient = require('../../server').esclient;
 
 exports.companySearch = function(req, res) {
-  console.log('### in companySearch');
 
   var indexes = req.query.indexes;
   var types = req.query.types;
   var search = req.query.search;
-  console.log('#### indexes: ' + indexes);
-  console.log('####   types: ' + types);
-  console.log('####  search: ' + req.query.search);
+  console.log('### in companySearch (type: ' + types + ', index: ' + indexes  + ' , search: ' + search + ')');
 
   esclient.search({
     index: indexes,

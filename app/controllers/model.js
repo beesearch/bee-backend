@@ -21,7 +21,7 @@ exports.getModel = function(req, res) {
 }
 
 function getCompany(type, index, id, res) {
-	console.log('#### in getCompany (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
+	console.log('### in getCompany (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
 	// Parallel calls
 	async.parallel({
 		companyDatas: function(callback) { getCompanyDatas(type, index, id, callback) },
@@ -35,7 +35,7 @@ function getCompany(type, index, id, res) {
 }
 
 function getCompanyDatas(type, index, id, callback) {
-	console.log('#### in getCompanyDatas (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
+	console.log('### in getCompanyDatas (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
 	esclient.get({
 		index: index,
 		type: type,
@@ -50,7 +50,7 @@ function getCompanyDatas(type, index, id, callback) {
 }
 
 function getCompanyTop5ProductsChart(type, index, id, callback) {
-	console.log('#### in getCompanyTop5ProductsChart (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
+	console.log('### in getCompanyTop5ProductsChart (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
 	esclient.search({
 		index: index,
 		type: 'customer',
@@ -81,7 +81,7 @@ function getCompanyTop5ProductsChart(type, index, id, callback) {
 }
 
 function getCompanyTop5SalesChart(type, index, id, callback) {
-	console.log('#### in getCompanyTop5SalesChart (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
+	console.log('### in getCompanyTop5SalesChart (type: ' + type + ', index: ' + index  + ' , id: ' + id + ')');
 	esclient.search({
 		index: index,
 		type: 'customer',
