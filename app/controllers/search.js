@@ -13,7 +13,7 @@ exports.companySearch = function(req, res) {
     type: types,
     body: 
     {
-      "fields" : ["company.name", "company.siren"],
+      "fields" : ["company.name", "company.siren", "company.companyId"],
       "query": {
         "match_phrase_prefix": {
           "company.name": {

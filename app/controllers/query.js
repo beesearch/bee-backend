@@ -35,7 +35,8 @@ function getCustomer(collection, db, id, res) {
 
 function getCustomerDatas(collection, db, id, callback) {
     console.log('### in getCustomerDatas (collection: ' + collection + ', db: ' + db  + ' , id: ' + id + ')');
-    mdb.customer.find({customerId: id}, function(err, docs) {
+    var i = parseInt(id)
+    mdb.customer.find({customerId: i}, function(err, docs) {
         callback(null, docs);
     });
 }
