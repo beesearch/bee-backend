@@ -41,9 +41,6 @@ var esclient = new elasticsearch.Client({
 });
 exports.esclient = esclient;
 
-// Mongodb data setup
-var mdbclient = mongo('127.0.0.1:27017/abo', ['customer']);
-exports.mdbclient = mdbclient;
 
 // Express setup
 var app = express();

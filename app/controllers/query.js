@@ -1,7 +1,6 @@
-var async = require("async");
+var async = require("async"),
+    mongo = require('mongojs');
 
-// Mongo client
-var mdb = require('../../server').mdbclient;
 
 exports.testQuery = function(req, res) {
     console.log('### in getQuery (collection: ' + req.param("collection") + ', db: ' + req.param("db")  + ' , id: ' + req.param("id") + ')');
@@ -35,6 +34,11 @@ function getCustomer(collection, db, id, res) {
 
 function getCustomerDatas(collection, db, id, callback) {
     console.log('### in getCustomerDatas (collection: ' + collection + ', db: ' + db  + ' , id: ' + id + ')');
+
+    // Mongodb data setup
+    var mdb = mongo('127.0.0.1:27017/'+db, ['customer']);
+
+
     var customerId = parseInt(id)
     mdb.customer.find({customerId: customerId}, function(err, docs) {
         callback(null, docs);

@@ -13,10 +13,10 @@ exports.companySearch = function(req, res) {
     type: types,
     body: 
     {
-      "fields" : ["company.name", "company.siren", "company.companyId"],
+      "fields" : ["name", "siren", "id"],
       "query": {
         "match_phrase_prefix": {
-          "company.name": {
+          "name": {
             "query": search,
             "max_expansions": 5
           }
