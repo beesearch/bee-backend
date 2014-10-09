@@ -73,13 +73,13 @@ if (config.oauth.enabled) {
 }
 
 // Controllers
-var query = require('./app/controllers/query');
 var search = require('./app/controllers/search');
-var model = require('./app/controllers/model');
+//var model = require('./app/controllers/model');
+var query = require('./app/controllers/query');
 
 // Routes
 app.get('/search', app.oauth.authorise(), search.companySearch);
-app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
+//app.get('/type/:type/index/:index/id/:id', app.oauth.authorise(), model.getModel);
 app.get('/db/:db/collection/:collection/id/:id', app.oauth.authorise(), query.testQuery);
 
 
