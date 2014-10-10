@@ -25,7 +25,8 @@ function getCustomer(collection, db, id, res) {
     async.parallel({
         customerDatas: function(callback) { getCustomerDatas(collection, db, id, callback) },
         customerTop5Chart: function(callback) { getCustomerTop5ProductsChart(collection, db, id, callback) },
-        customerHistorySales: function(callback) { getCustomerHistoryChart(collection, db, id, callback) }
+        customerCateroyOrderChart: function(callback) { getCustomerCateroyOrderChart(collection, db, id, callback) },
+        customerHistoryOrderChart: function(callback) { getCustomerHistoryOrderChart(collection, db, id, callback) }
 
     }, function(err, result) {
         console.log('### Async calls result: ' + JSON.stringify(result));
@@ -62,7 +63,6 @@ function getCustomerTop5ProductsChart(collection, db, id, callback) {
             _id : "$orders.orderType",
             torder : {$sum : "$orders.orderTotal"}
         } },
-        {$limit: 40},
         {$sort: {"_id":1}},
         function(err, docs) {
             if (err) {
@@ -76,8 +76,8 @@ function getCustomerTop5ProductsChart(collection, db, id, callback) {
 
 }
 
-function getCustomerHistoryChart(collection, db, id, callback) {
-    console.log('### in getCustomerHistoryChart (collection: ' + collection + ', db: ' + db  + ' , id: ' + id + ')');
+function getCustomerCateroyOrderChart(collection, db, id, callback) {
+    console.log('### in getCustomerCateroyOrderChart (collection: ' + collection + ', db: ' + db  + ' , id: ' + id + ')');
 
     var mdb = mongo('127.0.0.1:27017/'+db, ['customer']);
 
@@ -90,7 +90,6 @@ function getCustomerHistoryChart(collection, db, id, callback) {
             maxOrder : {$max : "$orders.orderTotal"},
             avgOrder : {$avg : "$orders.orderTotal"}
         } },
-        {$limit: 40},
         {$sort: {"_id":1}},
         function(err, docs) {
             if (err) {
@@ -104,17 +103,44 @@ function getCustomerHistoryChart(collection, db, id, callback) {
 
 }
 
+function getCustomerHistoryOrderChart(collection, db, id, callback) {
+    console.log('### in getCustomerCateroyOrderChart (collection: ' + collection + ', db: ' + db  + ' , id: ' + id + ')');
+
+    var mdb = mongo('127.0.0.1:27017/'+db, ['customer']);
+
+    mdb.customer.aggregate(
+        {$unwind: '$orders'},
+        {$group: {
+            _id: { year: { $year: "$orders.orderDate" }, month: { $month: "$orders.orderDate" } },
+            sumOrder: {$avg : "$orders.orderTotal"} } },
+        {$sort: {"_id":1}} ,
+        function(err, docs) {
+            if (err) {
+                console.log('/!\\ ' + err.message);
+                callback(err);
+            } else {
+                callback(null, fromFacetsToChart3(docs));
+            }
+        }
+    );
+
+}
+
+
 function fromFacetsToChart(aggregate) {
     // Chart structure
-    var chart = {
-        series: [{ data: []}]
-    };
+    var chart = {};
+    chart.series=[];
 
-    // terms to serie's datas
+    serie = {};
+    serie.name = "MAX";
+    serie.type = "pie";
+    serie.data = [];
     for (var i = 0; i < aggregate.length; i++) {
         var obj = aggregate[i];
-        chart.series[0].data.push({'name': obj._id, 'y': obj.torder});
+        serie.data.push({'name': obj._id, 'y': obj.torder});
     };
+    chart.series.push(serie);
 
     console.log(JSON.stringify(chart));
 
@@ -131,51 +157,64 @@ function fromFacetsToChart2(aggregate) {
     for (var i = 0; i < aggregate.length; i++) {
         var obj = aggregate[i];
         categories.push(obj._id);
-        //categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
     };
     chart.xAxis.categories = categories;
 
     serie = {};
-    serie.name = "SUM";
-    serie.data = [];
-    for (var i = 0; i < aggregate.length; i++) {
-        var obj = aggregate[i];
-        serie.data.push(obj.sumOrder);
-        //serie.data = [0,1,2,3];
-    };
-    chart.series.push(serie);
-
-    serie = {};
     serie.name = "MAX";
+    serie.type = "bar";
     serie.data = [];
     for (var i = 0; i < aggregate.length; i++) {
         var obj = aggregate[i];
         serie.data.push(obj.maxOrder);
-        //serie.data = [0,1,2,3];
     };
     chart.series.push(serie);
 
     serie = {};
     serie.name = "AVG";
-    serie.id = "cdjwxbcn";
+    serie.type = "bar";
     serie.data = [];
     for (var i = 0; i < aggregate.length; i++) {
         var obj = aggregate[i];
         serie.data.push(obj.avgOrder);
-        //serie.data = [0,1,2,3];
     };
     chart.series.push(serie);
 
-
-    line = {};
-    line.name = "MIN";
-    line.data = [];
+    serie = {};
+    serie.name = "MIN";
+    serie.type = "bar";
+    serie.data = [];
     for (var i = 0; i < aggregate.length; i++) {
         var obj = aggregate[i];
-        line.data.push(obj.minOrder);
-        //serie.data = [0,1,2,3];
+        serie.data.push(obj.minOrder);
     };
-    chart.series.push(line);
+    chart.series.push(serie);
+
+    console.log(JSON.stringify(chart));
+
+    return chart;
+}
+
+function fromFacetsToChart3(aggregate) {
+    // Chart structure
+    var chart = {};
+    chart.series=[];
+    chart.xAxis = {
+        type : 'datetime',
+        minRange : 24 * 3600 * 1000
+    };
+
+    serie = {};
+    serie.name = "HISTO";
+    serie.type = "area";
+    serie.pointInterval = 24 * 3600 * 1000;
+    serie.pointStart = Date.UTC(2008, 0, 1);
+    serie.data = [];
+    for (var i = 0; i < aggregate.length; i++) {
+        var obj = aggregate[i];
+        serie.data.push(obj.sumOrder);
+    };
+    chart.series.push(serie);
 
     console.log(JSON.stringify(chart));
 
