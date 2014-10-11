@@ -57,13 +57,15 @@ function getCustomerTop5ProductsChart(collection, db, id, callback) {
 
     var mdb = mongo('127.0.0.1:27017/'+db, ['customer']);
 
+    var customerId = parseInt(id)
     mdb.customer.aggregate(
+        {$match : { customerId : customerId } },
         {$unwind: '$orders'},
         {$group: {
             _id : "$orders.orderType",
             torder : {$sum : "$orders.orderTotal"}
         } },
-        {$sort: {"_id":1}},
+        {$sort: {"torder":-1}},
         function(err, docs) {
             if (err) {
                 console.log('/!\\ ' + err.message);
@@ -81,7 +83,9 @@ function getCustomerCateroyOrderChart(collection, db, id, callback) {
 
     var mdb = mongo('127.0.0.1:27017/'+db, ['customer']);
 
+    var customerId = parseInt(id)
     mdb.customer.aggregate(
+        {$match : { customerId : customerId } },
         {$unwind: '$orders'},
         {$group: {
             _id : "$orders.orderType",
@@ -108,12 +112,14 @@ function getCustomerHistoryOrderChart(collection, db, id, callback) {
 
     var mdb = mongo('127.0.0.1:27017/'+db, ['customer']);
 
+    var customerId = parseInt(id)
     mdb.customer.aggregate(
+        {$match : { customerId : customerId } },
         {$unwind: '$orders'},
         {$group: {
             _id: { year: { $year: "$orders.orderDate" }, month: { $month: "$orders.orderDate" } },
             sumOrder: {$avg : "$orders.orderTotal"} } },
-        {$sort: {"_id":1}} ,
+        {$sort: {"_id":1}},
         function(err, docs) {
             if (err) {
                 console.log('/!\\ ' + err.message);
